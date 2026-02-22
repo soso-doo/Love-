@@ -4,160 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Do you love me? 💕</title>
-
 <style>
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  font-family:Arial, sans-serif;
-  background:linear-gradient(135deg,#ff6b88,#ffd1a8);
-  overflow:hidden;
-  text-align:center;
-  direction:rtl;
-}
-
-.card{
-  background:rgba(255,255,255,0.15);
-  padding:20px;
-  border-radius:20px;
-  backdrop-filter:blur(10px);
-  width:90%;
-  max-width:450px;
-}
-
-h1{color:white;margin-bottom:10px;}
-
-input{
-  padding:10px;
-  border:none;
-  border-radius:15px;
-  margin-bottom:10px;
-  width:80%;
-  font-size:16px;
-}
-
-button{
-  padding:12px 24px;
-  border:none;
-  border-radius:30px;
-  font-size:18px;
-  cursor:pointer;
-  position:absolute;
-  transition:0.2s;
-}
-
-#area{
-  position:relative;
-  height:200px;
-}
-
-#yes{
-  left:25%;
-  top:80px;
-  background:#ff2f65;
-  color:white;
-}
-
-#no{
-  left:55%;
-  top:80px;
-  background:#6c757d;
-  color:white;
-}
-
-.message{
-  display:none;
-  margin-top:15px;
-  font-size:22px;
-  color:white;
-}
-
-.heart{
-  position:absolute;
-  font-size:20px;
-  animation:fall 3s linear forwards;
-}
-
-@keyframes fall{
-  0%{transform:translateY(-10px);}
-  100%{transform:translateY(100vh);}
-}
+body{margin:0;height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;
+font-family:Arial;background:linear-gradient(135deg,#ff6b88,#ffd1a8);text-align:center;direction:rtl}
+h1{color:#fff}
+.area{position:relative;height:220px;width:min(420px,90vw)}
+button{position:absolute;padding:12px 22px;border:none;border-radius:999px;font-size:18px;cursor:pointer}
+#yes{left:25%;top:100px;background:#ff2f65;color:#fff}
+#no{left:55%;top:100px;background:#6c757d;color:#fff}
+.msg{display:none;margin-top:12px;font-size:22px;color:#fff}
 </style>
 </head>
-
 <body>
 
-<div class="card">
-  <h1 id="title">Do you love me? 💕</h1>
-  <input id="nameInput" placeholder="ناصر">
-  <div id="area">
-    <button id="yes">نعم 💖</button>
-    <button id="no">لا 😢</button>
-  </div>
-  <div class="message" id="message"></div>
+<h1 id="t">Do you love me? 💕</h1>
+<input id="n" placeholder="اكتبي الاسم هنا" oninput="t.textContent=this.value?`Do you love me, ${this.value}? 💕`:`Do you love me? 💕`">
+
+<div class="area" id="a">
+  <button id="yes">نعم 💖</button>
+  <button id="no">لا 😢</button>
 </div>
 
+<div class="msg" id="m"></div>
+
 <script>
-const nameInput = document.getElementById("nameInput");
-const title = document.getElementById("title");
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
-const message = document.getElementById("message");
-const area = document.getElementById("area");
+let s=18;
+const y=yes,n0=no,a=document.getElementById('a'),m=document.getElementById('m'),nameInput=document.getElementById('n');
 
-let yesSize = 18;
-let attempts = 0;
+function move(e){
+  e.preventDefault();
+  const x=Math.random()*(a.clientWidth-n0.offsetWidth);
+  const y2=Math.random()*(a.clientHeight-n0.offsetHeight);
+  n0.style.left=x+"px"; n0.style.top=y2+"px";
+  s+=2; y.style.fontSize=s+"px";
+}
 
-nameInput.addEventListener("input",()=>{
-  if(nameInput.value.trim()!==""){
-    title.textContent = `Do you love me, ${nameInput.value}? 💕`;
-  } else {
-    title.textContent = "Do you love me? 💕";
-  }
-});
+n0.onmouseover=move;
+n0.ontouchstart=move;
 
-noBtn.addEventListener("mouseover",()=>{
-  attempts++;
-
-  const maxX = area.clientWidth - noBtn.offsetWidth;
-  const maxY = area.clientHeight - noBtn.offsetHeight;
-
-  const x = Math.random()*maxX;
-  const y = Math.random()*maxY;
-
-  noBtn.style.left = x+"px";
-  noBtn.style.top = y+"px";
-
-  yesSize += 2;
-  yesBtn.style.fontSize = yesSize+"px";
-
-  if(attempts>6){
-    noBtn.textContent="مستحيل 😭";
-  }
-});
-
-yesBtn.addEventListener("click",()=>{
-  const name = nameInput.value || "حبيبي";
-  message.style.display="block";
-  message.innerHTML=`كنت أدري يا ${صوصو} 😌💖`;
-  startHearts();
-  yesBtn.disabled=true;
-  noBtn.disabled=true;
-});
-
-function startHearts(){
-  setInterval(()=>{
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="💖";
-    heart.style.left=Math.random()*window.innerWidth+"px";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),3000);
-  },300);
+y.onclick=()=>{
+  const name=nameInput.value||"حبيبي";
+  m.style.display="block";
+  m.innerHTML=`كنت أدري يا ${name} 😌💖`;
+  y.disabled=true; n0.disabled=true;
 }
 </script>
 
